@@ -24,6 +24,15 @@ self-hosted, ad-free **Tachiyomi / Mihon / Kotatsu alternative** you own end to 
 > **In one line:** `docker run -d -p 8080:8080 -v nyora-data:/data hasan72341/nyora` → open
 > `http://localhost:8080` and you're reading, with every source parsed locally.
 
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/Hasan72341/nyora-web/main/docs/screenshots/desktop/discover.png" width="49%" alt="Discover — trending manga" /> <img src="https://raw.githubusercontent.com/Hasan72341/nyora-web/main/docs/screenshots/desktop/library.png" width="49%" alt="Library" />
+<img src="https://raw.githubusercontent.com/Hasan72341/nyora-web/main/docs/screenshots/desktop/settings.png" width="49%" alt="Settings" /> <img src="https://raw.githubusercontent.com/Hasan72341/nyora-web/main/docs/screenshots/desktop/welcome.png" width="49%" alt="Welcome" />
+
+<sub>The Nyora web reader — running entirely from your own Docker container.</sub>
+
+</div>
+
 ---
 
 ## Table of contents
