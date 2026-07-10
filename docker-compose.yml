@@ -1,0 +1,90 @@
+# ============================================================================
+# Nyora — self-hosted local stack.
+#
+#   nyora        : the web SPA + the parser helper, in one container.
+#                  Caddy :8080 → helper on 127.0.0.1:8788 (same-origin /api).
+#   flaresolverr : a Cloudflare-challenge solver the helper calls when a source
+#                  is behind a browser challenge.
+#
+# Reading is 100% LOCAL — the SPA talks only to the in-container helper, which
+# parses every source itself. The only remote piece is optional library SYNC
+# (NYORA_SYNC_URL); leave the default, self-host your own, or never sign in.
+#
+#   docker compose up --build                 # build from source + run
+#   open http://localhost:8080
+#
+#   WEB_PORT=9000 docker compose up --build    # serve on host :9000
+#   NYORA_SYNC_URL=http://localhost:8000 docker compose up   # self-hosted sync
+# ============================================================================
+
+services:
+  nyora:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Pin the source refs the image is built from (branch/tag/commit).
+        NYORA_WEB_REF: ${NYORA_WEB_REF:-main}
+        NYORA_ENGINE_REF: ${NYORA_ENGINE_REF:-main}
+    image: nyora-selfhost:local
+    restart: unless-stopped
+    depends_on:
+      # started (not healthy): most sources need no CF solve, and the helper
+      # degrades gracefully when FlareSolverr is unreachable — so the app must
+      # not be blocked on the (qemu-emulated on ARM, slow) solver warming up.
+      flaresolverr:
+        condition: service_started
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    environment:
+      # Optional remote sync. Point at your own nyora-sync-server to stay local,
+      # or ignore it entirely and use the app as a guest.
+      NYORA_SYNC_URL: ${NYORA_SYNC_URL:-https://stream.hasanraza.tech}
+      # Helper → FlareSolverr over the compose network (service DNS name).
+      FLARESOLVERR_URL: http://flaresolverr:8191/v1
+      NYORA_HELPER_PORT: "8788"
+    volumes:
+      # Persist the helper's SQLite DB + port file across restarts.
+      - nyora-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+    # One container runs BOTH the JVM helper and Caddy; 768m gives the helper's
+    # JVM flags (-Xmx320m + metaspace/codecache + /image proxy buffers) headroom.
+    mem_limit: 768m
+    memswap_limit: 768m
+    cpus: 1.5
+    networks:
+      - nyora
+
+  flaresolverr:
+    # amd64-first image; on Apple Silicon it runs under qemu (slower to warm).
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      LOG_LEVEL: info
+      HEADLESS: "true"
+      BROWSER_TIMEOUT: "45000"
+    expose:
+      - "8191"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8191/health', timeout=5).status==200 else 1)\""]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+    mem_limit: 700m
+    networks:
+      - nyora
+
+networks:
+  nyora:
+    driver: bridge
+
+volumes:
+  nyora-data:
+    driver: local
