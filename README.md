@@ -2,7 +2,7 @@
 
 <img src="https://nyora.pages.dev/icon.png" width="110" alt="Nyora" />
 
-# Nyora — Self-Hosted
+# Nyora — Docker
 
 ### Run the whole reader on your own machine.
 
@@ -24,8 +24,8 @@ cloud to read; the only optional remote piece is library sync, which you can sel
 ## Quick start
 
 ```sh
-git clone https://github.com/Hasan72341/nyora-selfhost.git
-cd nyora-selfhost
+git clone https://github.com/Hasan72341/nyora-docker.git
+cd nyora-docker
 docker compose up --build
 ```
 

@@ -26,7 +26,7 @@ services:
         # Pin the source refs the image is built from (branch/tag/commit).
         NYORA_WEB_REF: ${NYORA_WEB_REF:-main}
         NYORA_SHARED_REF: ${NYORA_SHARED_REF:-main}
-    image: nyora-selfhost:local
+    image: nyora-docker:local
     restart: unless-stopped
     depends_on:
       # started (not healthy): most sources need no CF solve, and the helper
