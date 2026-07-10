@@ -23,19 +23,37 @@ cloud to read; the only optional remote piece is library sync, which you can sel
 
 ## Quick start
 
+### Option A — run the published image (fastest, no build)
+
+The image is on Docker Hub as **[`hasan72341/nyora`](https://hub.docker.com/r/hasan72341/nyora)**:
+
+```sh
+git clone https://github.com/Hasan72341/nyora-docker.git
+cd nyora-docker
+docker compose pull && docker compose up -d
+```
+
+…or without cloning, just the reader (no FlareSolverr CF-solver):
+
+```sh
+docker run -d -p 8080:8080 -v nyora-data:/data hasan72341/nyora:latest
+```
+
+### Option B — build from source
+
 ```sh
 git clone https://github.com/Hasan72341/nyora-docker.git
 cd nyora-docker
 docker compose up --build
 ```
 
-Then open **http://localhost:8080**. First build takes a few minutes (it compiles the
-parser engine and the web bundle from source); after that it starts in seconds.
+Either way, open **http://localhost:8080**. Building from source takes a few minutes (it
+compiles the parser engine and the web bundle); the published image starts in seconds.
 
 ```sh
-WEB_PORT=9000 docker compose up --build     # serve on a different host port
+WEB_PORT=9000 docker compose up -d          # serve on a different host port
 docker compose down                          # stop
-docker compose up --build -d                 # run detached
+docker compose pull                          # update to the latest published image
 ```
 
 ## What runs, and where
