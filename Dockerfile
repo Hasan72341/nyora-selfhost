@@ -14,19 +14,23 @@
 #   Java helper :8788 (loopback only)  → talks to FlareSolverr over the network
 #
 # Everything is built FROM SOURCE at image-build time — no prebuilt artifacts:
-#   1. helper — clone nyora-linux (+ nyora-shared submodule), build the fat jar
+#   1. helper — clone nyora-shared, build the fat jar with the vendored Gradle
+#               project in ./helper (web + helper only — no desktop app)
 #   2. web    — clone nyora-web, npm ci + npm run build → dist  (esbuild)
 #   3. runtime— eclipse-temurin:17-jre + caddy; copies jar + dist; non-root
 # ============================================================================
 
 # ----------------------------------------------------------------------------
-# Stage 1: build the parser helper fat jar from source (kotatsu-parsers engine
-# + NyoraRestServer). Needs the FULL JDK + Kotlin/Gradle toolchain.
+# Stage 1: build the parser helper fat jar from source (the kotatsu-parsers
+# engine + NyoraRestServer — the :shared JVM module of nyora-shared). Uses the
+# tiny self-contained Gradle project vendored in ./helper, so ONLY nyora-shared
+# is fetched — no desktop app, no Compose Desktop / Skiko / Chromium artifacts.
+# Needs the FULL JDK + Kotlin/Gradle toolchain.
 # ----------------------------------------------------------------------------
 FROM eclipse-temurin:17-jdk AS helper
 
-ARG NYORA_ENGINE_REF=main
-ARG NYORA_ENGINE_REPO=https://github.com/Hasan72341/nyora-linux.git
+ARG NYORA_SHARED_REF=main
+ARG NYORA_SHARED_REPO=https://github.com/Hasan72341/nyora-shared.git
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git ca-certificates \
@@ -34,16 +38,18 @@ RUN apt-get update \
 
 WORKDIR /build
 
-# Clone the helper build repo AND its nyora-shared submodule (provides
-# commonMain/jvmMain + the SQLDelight schema — both required to build).
-RUN git clone --depth 1 --recurse-submodules --shallow-submodules \
-      --branch "${NYORA_ENGINE_REF}" "${NYORA_ENGINE_REPO}" nyora-linux
+# The vendored Gradle project (wrapper + the :shared module build).
+COPY helper/ /build/helper/
 
-WORKDIR /build/nyora-linux
+# The helper's source: the shared Kotlin engine (kotatsu-parsers + REST server).
+# The build reads it from ./nyora-shared/src (see helper/shared/build.gradle.kts).
+RUN git clone --depth 1 --branch "${NYORA_SHARED_REF}" "${NYORA_SHARED_REPO}" \
+      /build/helper/nyora-shared
 
-# Build ONLY :shared:helperJar — never the desktop app, so the Compose Desktop /
-# Skiko / Chromium artifacts are never fetched. Needs outbound network for
-# Gradle + the jitpack kotatsu-parsers engine (do NOT use --offline).
+WORKDIR /build/helper
+
+# Build the fat jar. Needs outbound network for Gradle + the jitpack
+# kotatsu-parsers engine (do NOT use --offline).
 RUN --mount=type=cache,target=/root/.gradle \
     chmod +x ./gradlew \
     && ./gradlew :shared:helperJar --no-daemon --console=plain \

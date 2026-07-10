@@ -85,7 +85,7 @@ Copy `.env.example` to `.env` (or pass vars inline):
 | `WEB_PORT` | `8080` | Host port to serve on. |
 | `NYORA_SYNC_URL` | `https://stream.hasanraza.tech` | Optional sync backend (see above). |
 | `NYORA_WEB_REF` | `main` | Git ref of [`nyora-web`](https://github.com/Hasan72341/nyora-web) to build the SPA from. |
-| `NYORA_ENGINE_REF` | `main` | Git ref of [`nyora-linux`](https://github.com/Hasan72341/nyora-linux) to build the helper from. |
+| `NYORA_SHARED_REF` | `main` | Git ref of [`nyora-shared`](https://github.com/Hasan72341/nyora-shared) to build the helper from. |
 
 Your library, history and settings persist in the `nyora-data` Docker volume across restarts.
 
@@ -93,9 +93,11 @@ Your library, history and settings persist in the `nyora-data` Docker volume acr
 
 Three stages, all **from source** (no prebuilt binaries):
 
-1. **helper** — clones `nyora-linux` (+ its `nyora-shared` submodule) and builds only
-   `:shared:helperJar` (the fat jar with the kotatsu-parsers engine and the REST server) —
-   the Compose Desktop / Chromium artifacts are never fetched.
+1. **helper** — clones [`nyora-shared`](https://github.com/Hasan72341/nyora-shared) (the
+   shared Kotlin engine) and builds `:shared:helperJar` (the fat jar with the kotatsu-parsers
+   engine and the REST server) using the tiny self-contained Gradle project vendored in
+   [`helper/`](./helper). **Only nyora-shared is fetched** — no desktop app, no Compose
+   Desktop / Chromium artifacts.
 2. **web** — clones `nyora-web`, runs `npm ci && npm run build` (esbuild) → `dist/`.
 3. **runtime** — a lean `eclipse-temurin:17-jre` + Caddy, running as a **non-root** user, with
    a healthcheck that proves both the proxy and the helper are alive.
@@ -106,7 +108,7 @@ Three stages, all **from source** (no prebuilt binaries):
 docker compose build --no-cache && docker compose up -d
 ```
 
-Or pin specific versions, e.g. `NYORA_WEB_REF=web-v2.0.0 NYORA_ENGINE_REF=v2.0.6 docker compose build`.
+Or pin specific versions, e.g. `NYORA_WEB_REF=web-v2.0.0 NYORA_SHARED_REF=main docker compose build`.
 
 ## Requirements & notes
 
@@ -121,7 +123,7 @@ Or pin specific versions, e.g. `NYORA_WEB_REF=web-v2.0.0 NYORA_ENGINE_REF=v2.0.6
 - **Nyora project index:** https://github.com/Hasan72341/Nyora
 - **Website & apps:** https://nyora.pages.dev
 - **Web UI source:** https://github.com/Hasan72341/nyora-web
-- **Parser engine / helper:** https://github.com/Hasan72341/nyora-linux (+ `nyora-shared`)
+- **Parser engine / helper:** https://github.com/Hasan72341/nyora-shared (the kotatsu-parsers engine + REST server)
 
 ## License
 

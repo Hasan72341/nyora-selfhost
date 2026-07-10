@@ -25,7 +25,7 @@ services:
       args:
         # Pin the source refs the image is built from (branch/tag/commit).
         NYORA_WEB_REF: ${NYORA_WEB_REF:-main}
-        NYORA_ENGINE_REF: ${NYORA_ENGINE_REF:-main}
+        NYORA_SHARED_REF: ${NYORA_SHARED_REF:-main}
     image: nyora-selfhost:local
     restart: unless-stopped
     depends_on:
