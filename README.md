@@ -138,7 +138,7 @@ Copy `.env.example` → `.env` (Compose) or pass `-e` flags (`docker run`):
 |---|---|---|
 | host port | `8080` | `-p <host>:8080` or `WEB_PORT` with Compose |
 | `/data` volume | — | persists your **library, history, settings + SQLite DB** |
-| `NYORA_SYNC_URL` | `https://stream.hasanraza.tech` | optional sync backend (self-host / omit) |
+| `NYORA_SYNC_URL` | `https://sync.nyora.xyz` | optional sync backend (self-host / omit) |
 | `FLARESOLVERR_URL` | `http://flaresolverr:8191/v1` | CF-challenge solver (Compose sets this) |
 | `NYORA_HELPER_PORT` | `8788` | loopback port the helper binds (behind `/api`) |
 | `JAVA_OPTS` | `-Xmx320m …` | JVM tuning for the helper |

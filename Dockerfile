@@ -113,7 +113,7 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh \
 
 # Runtime config — all overridable at compose/run time.
 # Sync stays REMOTE by default; the helper is loopback-only behind /api.
-ENV NYORA_SYNC_URL=https://stream.hasanraza.tech \
+ENV NYORA_SYNC_URL=https://sync.nyora.xyz \
     FLARESOLVERR_URL=http://flaresolverr:8191/v1 \
     NYORA_HELPER_PORT=8788 \
     NYORA_HELPER_JAR=/opt/nyora/nyora-helper.jar \

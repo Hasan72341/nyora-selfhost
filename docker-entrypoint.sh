@@ -14,7 +14,7 @@ set -euo pipefail
 SRV_ROOT="${SRV_ROOT:-/srv}"
 HELPER_PORT="${NYORA_HELPER_PORT:-8788}"
 HELPER_JAR="${NYORA_HELPER_JAR:-/opt/nyora/nyora-helper.jar}"
-SYNC_URL="${NYORA_SYNC_URL:-https://stream.hasanraza.tech}"
+SYNC_URL="${NYORA_SYNC_URL:-https://sync.nyora.xyz}"
 FLARE_URL="${FLARESOLVERR_URL:-http://flaresolverr:8191/v1}"
 JAVA_OPTS="${JAVA_OPTS:--Xmx320m -Xss512k -XX:MaxMetaspaceSize=128m -XX:ReservedCodeCacheSize=64m -XX:+UseSerialGC}"
 

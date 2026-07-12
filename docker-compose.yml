@@ -39,7 +39,7 @@ services:
     environment:
       # Optional remote sync. Point at your own nyora-sync-server to stay local,
       # or ignore it entirely and use the app as a guest.
-      NYORA_SYNC_URL: ${NYORA_SYNC_URL:-https://stream.hasanraza.tech}
+      NYORA_SYNC_URL: ${NYORA_SYNC_URL:-https://sync.nyora.xyz}
       # Helper → FlareSolverr over the compose network (service DNS name).
       FLARESOLVERR_URL: http://flaresolverr:8191/v1
       NYORA_HELPER_PORT: "8788"
