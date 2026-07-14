@@ -26,8 +26,8 @@ self-hosted, ad-free **Tachiyomi / Mihon / Kotatsu alternative** you own end to 
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Hasan72341/nyora-web/main/docs/screenshots/desktop/discover.png" width="49%" alt="Discover — trending manga" /> <img src="https://raw.githubusercontent.com/Hasan72341/nyora-web/main/docs/screenshots/desktop/library.png" width="49%" alt="Library" />
-<img src="https://raw.githubusercontent.com/Hasan72341/nyora-web/main/docs/screenshots/desktop/settings.png" width="49%" alt="Settings" /> <img src="https://raw.githubusercontent.com/Hasan72341/nyora-web/main/docs/screenshots/desktop/welcome.png" width="49%" alt="Welcome" />
+<img src="https://raw.githubusercontent.com/Nyora-Manga/nyora-web/main/docs/screenshots/desktop/discover-dark.png" width="49%" alt="Discover — trending manga" /> <img src="https://raw.githubusercontent.com/Nyora-Manga/nyora-web/main/docs/screenshots/desktop/explore-dark.png" width="49%" alt="Library" />
+<img src="https://raw.githubusercontent.com/Nyora-Manga/nyora-web/main/docs/screenshots/desktop/settings-dark.png" width="49%" alt="Settings" /> <img src="https://raw.githubusercontent.com/Nyora-Manga/nyora-web/main/docs/screenshots/desktop/welcome-dark.png" width="49%" alt="Welcome" />
 
 <sub>The Nyora web reader — running entirely from your own Docker container.</sub>
 
@@ -78,7 +78,7 @@ Some sources sit behind a browser challenge; the [FlareSolverr](https://github.c
 sidecar handles those. Grab the compose file and pull the image:
 
 ```sh
-git clone https://github.com/Hasan72341/nyora-docker.git
+git clone https://github.com/Nyora-Manga/nyora-docker.git
 cd nyora-docker
 docker compose pull && docker compose up -d
 ```
@@ -86,7 +86,7 @@ docker compose pull && docker compose up -d
 ### Option C — build from source
 
 ```sh
-git clone https://github.com/Hasan72341/nyora-docker.git
+git clone https://github.com/Nyora-Manga/nyora-docker.git
 cd nyora-docker
 docker compose up --build          # compiles the helper + web bundle from source
 ```
@@ -142,8 +142,8 @@ Copy `.env.example` → `.env` (Compose) or pass `-e` flags (`docker run`):
 | `FLARESOLVERR_URL` | `http://flaresolverr:8191/v1` | CF-challenge solver (Compose sets this) |
 | `NYORA_HELPER_PORT` | `8788` | loopback port the helper binds (behind `/api`) |
 | `JAVA_OPTS` | `-Xmx320m …` | JVM tuning for the helper |
-| `NYORA_WEB_REF` | `main` | *(build only)* git ref of [`nyora-web`](https://github.com/Hasan72341/nyora-web) |
-| `NYORA_SHARED_REF` | `main` | *(build only)* git ref of [`nyora-shared`](https://github.com/Hasan72341/nyora-shared) |
+| `NYORA_WEB_REF` | `main` | *(build only)* git ref of [`nyora-web`](https://github.com/Nyora-Manga/nyora-web) |
+| `NYORA_SHARED_REF` | `main` | *(build only)* git ref of [`nyora-shared`](https://github.com/Nyora-Manga/nyora-shared) |
 
 ## Behind a reverse proxy / HTTPS
 
@@ -170,9 +170,9 @@ Your `/data` (library, history, settings) survives updates. To pin exact version
 ## Build from source
 
 Three stages, all from source (no prebuilt binaries): **(1) helper** — clones
-[`nyora-shared`](https://github.com/Hasan72341/nyora-shared) and builds the Kotatsu-engine fat jar
+[`nyora-shared`](https://github.com/Nyora-Manga/nyora-shared) and builds the Kotatsu-engine fat jar
 with a small vendored Gradle project in [`helper/`](./helper); **(2) web** — clones
-[`nyora-web`](https://github.com/Hasan72341/nyora-web) and runs `npm run build`; **(3) runtime** —
+[`nyora-web`](https://github.com/Nyora-Manga/nyora-web) and runs `npm run build`; **(3) runtime** —
 a lean `eclipse-temurin:17-jre` + Caddy, running **non-root**, healthchecked.
 
 ## Troubleshooting
@@ -218,7 +218,7 @@ comics across many languages.
 - **Docker** + the Compose plugin. ~1.5 GB RAM for the full stack (`nyora` 768 MB, `flaresolverr` 700 MB).
 - On **Apple Silicon / ARM**, the FlareSolverr image is amd64 and runs under emulation (slower to warm).
 - Parser engine: the open-source [Kotatsu](https://github.com/KotatsuApp/kotatsu-parsers) engine.
-  Web UI: [`nyora-web`](https://github.com/Hasan72341/nyora-web).
+  Web UI: [`nyora-web`](https://github.com/Nyora-Manga/nyora-web).
 
 ## Related
 

@@ -30,7 +30,7 @@
 FROM eclipse-temurin:17-jdk AS helper
 
 ARG NYORA_SHARED_REF=main
-ARG NYORA_SHARED_REPO=https://github.com/Hasan72341/nyora-shared.git
+ARG NYORA_SHARED_REPO=https://github.com/Nyora-Manga/nyora-shared.git
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git ca-certificates \
@@ -62,7 +62,7 @@ RUN --mount=type=cache,target=/root/.gradle \
 FROM node:22-alpine AS web
 
 ARG NYORA_WEB_REF=main
-ARG NYORA_WEB_REPO=https://github.com/Hasan72341/nyora-web.git
+ARG NYORA_WEB_REPO=https://github.com/Nyora-Manga/nyora-web.git
 
 RUN apk add --no-cache git
 WORKDIR /app
