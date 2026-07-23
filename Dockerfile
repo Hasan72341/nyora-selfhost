@@ -74,7 +74,7 @@ RUN npm ci --no-audit --no-fund || npm install --no-audit --no-fund
 RUN npm run build && test -f dist/index.html && test -f dist/env.js
 
 # The upstream index.html carries a hosted-only domain-migration <script>
-# (redirects nyoraweb.pages.dev → the public site). It is dead weight in a
+# (redirects nyora.xyz → the public site). It is dead weight in a
 # self-hosted build AND is blocked by the strict same-origin CSP, so strip it —
 # keeping script-src 'self' tight. Best-effort: a no-op if upstream drops it.
 RUN node -e "const fs=require('fs');const p='dist/index.html';let h=fs.readFileSync(p,'utf8');fs.writeFileSync(p,h.replace(/\s*<!--\s*Domain move[\s\S]*?<\/script>/,''));" \

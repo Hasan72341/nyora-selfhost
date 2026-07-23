@@ -1,13 +1,13 @@
 <div align="center">
 
-<img src="https://nyora.pages.dev/icon.png" width="110" alt="Nyora" />
+<img src="https://nyora.xyz/icon.png" width="110" alt="Nyora" />
 
 # Nyora — Self-Hosted Manga Reader in Docker
 
 ### Run your own manga / manhwa / manhua reader — one container, fully local.
 
 **`hasan72341/nyora`** is a one-command, **self-hosted Docker** deployment of
-[Nyora](https://nyora.pages.dev): the **web reader UI** and the **parser helper** (the
+[Nyora](https://nyora.xyz): the **web reader UI** and the **parser helper** (the
 [Kotatsu](https://github.com/KotatsuApp/kotatsu-parsers) engine) bundled in a single container,
 so every source is parsed **on your own machine**. No cloud, no account, no tracking — a
 self-hosted, ad-free **Tachiyomi / Mihon / Kotatsu alternative** you own end to end.
@@ -127,7 +127,7 @@ The one optional remote piece is **library sync** (`NYORA_SYNC_URL`):
 | Choice | How | Local? |
 |---|---|---|
 | **Don't sign in** | Use it as a guest — everything stays on your device | ✅ 100% local |
-| **Self-host sync** | Run your own [`nyora-sync-server`](https://github.com/Hasan72341/Nyora) and set `NYORA_SYNC_URL` | ✅ 100% local |
+| **Self-host sync** | Run your own [`nyora-sync-server`](https://github.com/Nyora-Manga/Nyora) and set `NYORA_SYNC_URL` | ✅ 100% local |
 | **Use Nyora Cloud** | Leave the default to sync with the other Nyora apps | ☁️ sync only |
 
 ## Configuration
@@ -223,8 +223,8 @@ comics across many languages.
 ## Related
 
 - **Docker Hub image:** [`hasan72341/nyora`](https://hub.docker.com/r/hasan72341/nyora)
-- **Nyora project index (every repo):** https://github.com/Hasan72341/Nyora
-- **Apps for Android / iOS / macOS / Windows / Linux + the hosted web app:** https://nyora.pages.dev
+- **Nyora project index (every repo):** https://github.com/Nyora-Manga/Nyora
+- **Apps for Android / iOS / macOS / Windows / Linux + the hosted web app:** https://nyora.xyz
 - **Developer SDKs:** [`nyora`](https://pypi.org/project/nyora/) (Python) · [`nyora-sdk`](https://www.npmjs.com/package/nyora-sdk) (JS/TS)
 
 ## License
